@@ -1,0 +1,64 @@
+<div class="col-lg-12 d-flex align-itmes-stretch">
+  <div class="card w-100">
+    <% if (showBack) {%>
+      <div class="p-3">
+        <a href="/post/create" class="btn btn-danger">بازگشت به همه ی دسته بندی ها</a>
+      </div>
+      <%}%>
+        <% if (options?.length <= 0 || !options) { %>
+          <div class="p-3">
+            <% if (categories && categories?.length > 0) {%>
+              <ul>
+                <% categories.forEach(category=> {%>
+                  <li>
+                    <a href="/post/create?slug=<%=category.slug%>" class="w-100 p-3 d-block bg-light text-dark">
+                      <span class="ti ti-<%=category.icon%> nav-small-cap-icon fs-4"></span>
+                      <span>
+                        <%=category.name%>
+                      </span>
+                    </a>
+                  </li>
+                  <%}); %>
+              </ul>
+              <%}%>
+          </div>
+          <%}else{ %>
+            <form action="/post/new-post" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="category" id="category" value="<%=category._id%>">
+              <div class="p-2 m-1">
+                <label for="images">انتخاب آدرس</label>
+                <div class="w-100" style="height: 300px;" id="app" ></div>
+              </div>
+              <div class="p-2 m-1">
+                <label for="images">تصاویر آگهی</label>
+                <input class="form-control" type="file" name="images" multiple>
+              </div>
+                <% options.forEach(option => { %>
+                    <label class="p-2"><%=option.title%><%=option.required? " * ": ""  %></label>  
+                  <% if (option.type === "array") { %>
+                    <select name="<%=option.title%>" class="form-select p-2 m-1">
+                      <% option.list.forEach(item => { %>
+                        <option value="<%=item%>"><%=item%></option>
+                      <% }) %>
+                    </select>
+                  <% } else { %> 
+                      <input type="text" name="<%=option.title%>" class="form-control p-3 m-1" placeholder="<%=option.guide%>">
+                    <%}%>
+                <% }) %>
+                <div class="p-2 m-1">
+                  <label >قیمت</label>
+                  <input type="number" name="amount" class="form-control p-2 m-1"placeholder="قیمت به تومان">
+                </div>
+                <div class="p-2 m-1">
+                  <label >عنوان اگهی</label>
+                  <input type="text" name="title" class="form-control p-2 m-1"placeholder="عنوان اگهی">
+                </div>
+                <div class="p-2 m-1">
+                  <label >توضیحات اگهی</label>
+                  <textarea type="text" name="description" class="form-control p-2 m-1"placeholder="توضیحات اگهی"></textarea>
+                </div>
+              <button type="submit" class="btn btn-danger">انتشار</button>
+            </form>
+              <%}%>
+  </div>
+</div>
